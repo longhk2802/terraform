@@ -1,6 +1,7 @@
 jobs:
   tflint:
     machine: true
+    allow_failure: true
     steps:
       - checkout
 
