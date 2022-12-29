@@ -1,17 +1,16 @@
 jobs:
-  checkov:
+  terrascan:
     machine: true
     steps:
       - checkout
-
+      
       - run:
-          shell: /bin/bash 
-          command: docker run --rm -w /src -v $(pwd):/src bridgecrew/checkov -d aws -o json | tee checkov-output.json
-          allow_failure: true
+          shell: /bin/bash
+          command: docker run --rm -v $(pwd):/src accurics/terrascan scan -t aws -d /src/aws -o json | tee terrascan-output.json
 
       - store_artifacts:
-          path: checkov-output.json
-          destination: checkov-artifact
+          path: terrascan-output.json
+          destination: terrascan-artifact
           when: always
 
   test:
@@ -39,10 +38,10 @@ workflows:
   version: 2
   terraform:
     jobs:
-      - checkov
+      - terrascan
       - test:
           requires:
-            - checkov 
+            - terrascan 
       - integration:
           requires:
             - test
