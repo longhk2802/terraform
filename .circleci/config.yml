@@ -1,17 +1,9 @@
 jobs:
-  terrascan:
+  build:
     machine: true
     steps:
       - checkout
-      
-      - run:
-          shell: /bin/bash
-          command: docker run --rm -v $(pwd):/src accurics/terrascan scan -t aws -d /src/aws -o json | tee terrascan-output.json
-
-      - store_artifacts:
-          path: terrascan-output.json
-          destination: terrascan-artifact
-          when: always
+      - run: echo "This is a build step"
 
   test:
     machine: true
@@ -38,10 +30,10 @@ workflows:
   version: 2
   terraform:
     jobs:
-      - terrascan
+      - build
       - test:
           requires:
-            - terrascan 
+            - build 
       - integration:
           requires:
             - test
