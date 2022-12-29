@@ -1,9 +1,17 @@
 jobs:
-  build:
+  tfsec:
     machine: true
     steps:
       - checkout
-      - run: echo "This is a build step"
+
+      - run: 
+          shell: /bin/bash
+          command: docker run --rm -v $(pwd):/src aquasec/tfsec /src -f json | tee tfsec-output.json
+
+      - store_artifacts:
+          path: tfsec-output.json
+          destination: tfsec-artifact
+          when: always
 
   test:
     machine: true
@@ -30,10 +38,10 @@ workflows:
   version: 2
   terraform:
     jobs:
-      - build
+      - tfsec
       - test:
           requires:
-            - build 
+            - tfsec 
       - integration:
           requires:
             - test
