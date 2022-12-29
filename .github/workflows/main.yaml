@@ -23,6 +23,12 @@ jobs:
           only_warn: true
           iac_dir: 'aws'
 
+      - name: Upload report
+        uses: actions/upload-artifact@v2
+        with:
+          name: report
+          path: report.json
+
   test:
     runs-on: ubuntu-20.04
     needs: terrascan
