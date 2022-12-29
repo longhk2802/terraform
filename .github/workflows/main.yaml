@@ -22,14 +22,13 @@ jobs:
           policy_type: 'aws'
           only_warn: true
           iac_dir: 'aws'
-          output_file: myreport.json
           output: json
 
       - name: Upload report
         uses: actions/upload-artifact@v2
         with:
           name: report
-          path: myreport.json
+          path: terrascan.json
 
   test:
     runs-on: ubuntu-20.04
