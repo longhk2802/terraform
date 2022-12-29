@@ -16,6 +16,7 @@ jobs:
         id: tfsec
         uses: aquasecurity/tfsec-pr-commenter-action@v1.2.0
         with:
+          tfsec_args: --out tfsec_report.json
           github_token: ${{ github.token }}
           tfsec_formats: json
           
@@ -23,7 +24,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          action-id: ${{ steps.tfsec.id }}
+          path: tfsec_report.json
 
 
   test:
