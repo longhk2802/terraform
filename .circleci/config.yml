@@ -36,6 +36,12 @@ jobs:
 
 workflows:
   version: 2
+  stages:
+    - stage:
+        name: checkov
+        jobs:
+          - checkov
+        allow_failure: true
   terraform:
     jobs:
       - checkov
